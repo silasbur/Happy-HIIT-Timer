@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import exercisesReducer from '../features/exercises/exercisesSlice';
+import intervalsReducer from '../features/intervals/IntervalsSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    exercises: exercisesReducer,
+    intervals: intervalsReducer,
   },
 });
