@@ -1,9 +1,27 @@
-import React from 'react';
-import { useSelector, useDispatch} from 'react-redux';
-import { removeExercise } from './exercisesSlice';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeExercise, setExercises } from './exercisesSlice';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+const reorder = (sourceIdx, destinationIdx, list) => {
+  const result = [...list];
+  const [removed] = result.splice(sourceIdx, 1);
+  result.splice(destinationIdx, 0, removed);
+  return result;
+};
 
 const ExercisesList = () => {
   const exercises = useSelector((state) => state.exercises);
+  const dispatch = useDispatch();
+
+  const onDragEnd = (result) => {
+    const newExercises = reorder(
+      result.source.index,
+      result.destination.index,
+      exercises
+    );
+    dispatch(setExercises(newExercises));
+  };
 
   return (
     <div className="overflow-x-auto py-4">
@@ -15,32 +33,50 @@ const ExercisesList = () => {
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          {exercises.map(({name, id}, idx) => (
-            <Exercise name={name} key={id} count={idx+1}/>
-          ))}
-        </tbody>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <tbody {...provided.droppableProps} ref={provided.innerRef}>
+                {exercises.map(({ name, id }, idx) => (
+                  <Exercise name={name} key={id} idx={idx} id={id} />
+                ))}
+              </tbody>
+            )}
+          </Droppable>
+        </DragDropContext>
       </table>
     </div>
   );
 };
 
-
-export const Exercise = ({name, id, count}) => {
+export const Exercise = ({ name, id, idx }) => {
   const dispatch = useDispatch();
 
   const handleRemove = () => {
-    dispatch(removeExercise(id))
-  }
+    dispatch(removeExercise(idx));
+  };
 
   return (
-    <tr>
-      <th>{count}</th>
-      <td>{name}</td>
-      <td><button className="btn btn-secondary" onClick={handleRemove} >X</button></td>
-    </tr>
-  )
-}
-
+    <Draggable draggableId={id} index={idx}>
+      {(provided) => {
+        return (
+          <tr
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <th>{idx + 1}</th>
+            <td>{name}</td>
+            <td>
+              <button className="btn btn-secondary" onClick={handleRemove}>
+                X
+              </button>
+            </td>
+          </tr>
+        );
+      }}
+    </Draggable>
+  );
+};
 
 export default ExercisesList;

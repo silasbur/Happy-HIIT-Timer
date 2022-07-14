@@ -8,6 +8,10 @@ export const exercisesSlice = createSlice({
   name: 'exercises',
   initialState,
   reducers: {
+    setExercises: (state, action) => {
+      state = action.payload;
+      return state;
+    },
     addExercise: (state, action) => {
       const id = nanoid();
       state.push({name: action.payload, id});
@@ -22,6 +26,6 @@ export const exercisesSlice = createSlice({
   },
 });
 
-export const { addExercise, removeExercise } = exercisesSlice.actions;
+export const { addExercise, removeExercise, setExercises } = exercisesSlice.actions;
 
 export default exercisesSlice.reducer; 

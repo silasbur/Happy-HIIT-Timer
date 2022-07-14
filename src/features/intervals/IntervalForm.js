@@ -3,32 +3,26 @@ import React from 'react';
 const IntervalForm = ({
   inputVals,
   handleFormChange,
-  incrementInterval,
-  restTime, 
-  exerciseTime
+  increment,
 }) => {
   return (
-    <div>
+    <>
       <IntervalInput
         intervalValue={inputVals.interval}
         handleFormChange={handleFormChange}
-        incrementInterval={incrementInterval}
+        increment={increment}
       />
 
-      <RestInput
+      <RatioInput
         handleFormChange={handleFormChange}
-        restValue={inputVals.rest}
+        value={inputVals.ratio}
       />
-      <div className="py-4">
-        <div>Rest time: {restTime}</div>
-        <div>Exercise time: {exerciseTime}</div>
-      </div>
-    </div>
+    </>
   );
 };
 
 export const IntervalInput = ({
-  incrementInterval,
+  increment,
   handleFormChange,
   intervalValue,
 }) => {
@@ -39,7 +33,7 @@ export const IntervalInput = ({
           <span className="label-text">Interval length in seconds</span>
         </label>
         <div className="input-group">
-          <button onClick={() => incrementInterval(-10)} className="btn ">
+          <button onClick={() => increment(-10)} className="btn ">
             -
           </button>
           <input
@@ -49,7 +43,7 @@ export const IntervalInput = ({
             type="number"
             className="input input-bordered w-full"
           />
-          <button className="btn" onClick={() => incrementInterval(+10)}>
+          <button className="btn" onClick={() => increment(+10)}>
             +
           </button>
         </div>
@@ -86,27 +80,24 @@ export const IntervalInput = ({
   );
 };
 
-export const RestInput = ({ handleFormChange, restValue }) => {
+export const RatioInput = ({ handleFormChange, value }) => {
   return (
     <div className="form-control">
       <label className="label">
-        <span className="label-text">Rest / work ratio</span>
+        <span className="label-text">Work / rest ratio</span>
       </label>
       <input
         onChange={handleFormChange}
-        name="rest"
+        name="ratio"
         type="range"
         min="0"
-        max="100"
-        value={restValue}
-        step="12.5"
+        max="1"
+        value={value}
+        step="0.125"
         className="range"
       />
       <div className="w-full flex justify-between text-xs px-2">
         <span>0</span>
-        <span>25</span>
-        <span>50</span>
-        <span>75</span>
         <span>100</span>
       </div>
     </div>

@@ -9,8 +9,10 @@ const ExercisesInput = () => {
 
   const handleAddExercise = evt => {
     evt.preventDefault();
-    dispatch(addExercise(input));
-    setInput('');
+    if (input !== '') {
+      dispatch(addExercise(input));
+      setInput('');
+    }
   };
 
   return (

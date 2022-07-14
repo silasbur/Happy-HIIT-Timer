@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 import IntervalForm from './IntervalForm';
 import { setIntervals } from './IntervalsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 /*
 - Time per interval
@@ -14,34 +14,32 @@ default to 1/4 rest
 */
 
 const IntervalsPage = () => {
-  const [inputVals, setInputs] = useState({ interval: 60, rest: 75 });
-
-  const calcTimes = () => {
-    const restTime = inputVals.rest * 0.01 * inputVals.interval;
-    const exerciseTime = inputVals.interval - restTime;
-    return { restTime, exerciseTime };
-  };
+  const { inputs, times } = useSelector((s) => ({
+    inputs: s.intervals.inputs,
+    times: s.intervals.times,
+  }));
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const navigateToNext = () => {
-    dispatch(setIntervals({ work: exerciseTime, rest: restTime }));
     navigate('/timer');
   };
 
-  const { exerciseTime, restTime } = useMemo(calcTimes, [
-    inputVals.interval,
-    inputVals.rest,
-  ]);
-
-  const handleFormChange = (evt) => {
-    setInputs((st) => ({ ...st, [evt.target.name]: evt.target.value }));
+  const updateIntervals = (inputValues) => {
+    dispatch(setIntervals(inputValues));
+    localStorage.setItem('intervals', JSON.stringify(inputValues));
   };
 
-  const incrementInterval = (delta) => {
-    const incrementedDelta = inputVals.interval + delta;
+  const handleFormChange = (evt) => {
+    const inputValues = { ...inputs, [evt.target.name]: +evt.target.value };
+    updateIntervals(inputValues);
+  };
+
+  const increment = (delta) => {
+    const incrementedDelta = inputs.interval + delta;
+    const inputValues = { ...inputs, interval: incrementedDelta };
     if (incrementedDelta > 0) {
-      setInputs((st) => ({ ...st, interval: incrementedDelta }));
+      updateIntervals(inputValues);
     }
   };
   return (
@@ -49,12 +47,14 @@ const IntervalsPage = () => {
       <div className="content-wrapper max-w-md w-full">
         <div className="max-w-lg">
           <IntervalForm
-            restTime={restTime}
-            exerciseTime={exerciseTime}
-            inputVals={inputVals}
+            inputVals={inputs}
             handleFormChange={handleFormChange}
-            incrementInterval={incrementInterval}
+            increment={increment}
           />
+        </div>
+        <div className="py-4">
+          <div>Work: {times.work}</div>
+          <div>Rest: {times.rest}</div>
         </div>
         <div className="flex justify-end w-full">
           <button className="btn btn-primary btn-lg" onClick={navigateToNext}>
