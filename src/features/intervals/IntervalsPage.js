@@ -25,19 +25,20 @@ const IntervalsPage = () => {
     navigate('/timer');
   };
 
-  const updateIntervals = (inputValues) => {
-    dispatch(setIntervals(inputValues));
-    localStorage.setItem('intervals', JSON.stringify(inputValues));
+  const updateIntervals = (values) => {
+    dispatch(setIntervals(values));
+    localStorage.setItem('intervals', JSON.stringify(values));
   };
 
   const handleFormChange = (evt) => {
+    console.log(+evt.target.value);
     const inputValues = { ...inputs, [evt.target.name]: +evt.target.value };
     updateIntervals(inputValues);
   };
 
-  const increment = (delta) => {
-    const incrementedDelta = inputs.interval + delta;
-    const inputValues = { ...inputs, interval: incrementedDelta };
+  const increment = (delta, name) => {
+    const incrementedDelta = inputs[name] + delta;
+    const inputValues = { ...inputs, [name]: incrementedDelta };
     if (incrementedDelta > 0) {
       updateIntervals(inputValues);
     }
@@ -55,6 +56,7 @@ const IntervalsPage = () => {
         <div className="py-4">
           <div>Work: {times.work}</div>
           <div>Rest: {times.rest}</div>
+          <div>Break: {inputs.break}</div>
         </div>
         <div className="flex justify-end w-full">
           <button className="btn btn-primary btn-lg" onClick={navigateToNext}>

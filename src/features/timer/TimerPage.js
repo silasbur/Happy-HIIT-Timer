@@ -15,16 +15,27 @@ const TimerPage = () => {
   }));
   const [phase, setPhase] = useState('rest');
   const [time, setTime] = useState(intervals[phase]);
-  const [icount, setIcount] = useState(0);
+  const [icount, setIcount] = useState(1);
+  const [isRunning, toggleRunning] = useState(false);
   const tick = () => {
     setTime((time) => time - 0.1);
+  };
+
+  const getNextPhase = (phase, intervalCount, numExercises) => {
+    if (phase === 'rest' || phase === 'break') {
+      return 'work';
+    } else if ((intervalCount + 1) % numExercises === 0) {
+      return 'break';
+    } else {
+      return 'rest';
+    }
   };
 
   // listen to timer
   useEffect(() => {
     if (time < 0.1) {
-      const nextPhase = phase === 'rest' ? 'work' : 'rest';
-      if (nextPhase === 'rest') {
+      const nextPhase = getNextPhase(phase, icount, exercises.length);
+      if (nextPhase !== 'work') {
         setIcount(icount + 1);
       }
       setTime(intervals[nextPhase]);
@@ -34,16 +45,18 @@ const TimerPage = () => {
 
   // set phase timer
   useEffect(() => {
-    const id = setInterval(tick, 100);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
+    if (isRunning) {
+      const id = setInterval(tick, 100);
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [isRunning]);
 
   const progressColor = phase === 'rest' ? 'accent' : 'info';
   const percentComplete = (time / intervals[phase]) * 100;
-  const progress = phase === 'rest' ? percentComplete : 100 - percentComplete;
-  const count = phase === 'rest' ? time : intervals[phase] - time;
+  const progress = phase !== 'work' ? percentComplete : 100 - percentComplete;
+  const count = phase !== 'work' ? time : intervals[phase] - time;
 
   return (
     <div className="timer-page p-3 w-full flex justify-center">
@@ -56,10 +69,15 @@ const TimerPage = () => {
             max="100"
           ></progress>
           {exercises.length ? (
-            <div className="badge badge-primary">{exercises[icount % exercises.length].name}</div>
+            <div className="badge badge-primary">
+              {exercises[icount-1 % exercises.length].name}
+            </div>
           ) : null}
           {icount + ' / ' + exercises.length}
         </div>
+        <button onClick={() => toggleRunning((isRunning) => !isRunning)}>
+          {isRunning ? 'Pause' : 'Play'}{' '}
+        </button>
       </div>
     </div>
   );

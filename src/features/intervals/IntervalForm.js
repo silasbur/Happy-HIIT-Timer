@@ -1,21 +1,24 @@
 import React from 'react';
 
-const IntervalForm = ({
-  inputVals,
-  handleFormChange,
-  increment,
-}) => {
+const IntervalForm = ({ inputVals, handleFormChange, increment }) => {
   return (
     <>
       <IntervalInput
-        intervalValue={inputVals.interval}
+        value={inputVals.interval}
         handleFormChange={handleFormChange}
         increment={increment}
+        name="interval"
+        label="Interval length in seconds"
       />
 
-      <RatioInput
+      <RatioInput handleFormChange={handleFormChange} value={inputVals.ratio} />
+
+      <IntervalInput
+        value={inputVals.break}
         handleFormChange={handleFormChange}
-        value={inputVals.ratio}
+        increment={increment}
+        name="break"
+        label="Break between sets in seconds"
       />
     </>
   );
@@ -24,26 +27,28 @@ const IntervalForm = ({
 export const IntervalInput = ({
   increment,
   handleFormChange,
-  intervalValue,
+  value,
+  name,
+  label
 }) => {
   return (
     <>
       <div className="form-control py-4">
         <label className="label">
-          <span className="label-text">Interval length in seconds</span>
+          <span className="label-text">{label}</span>
         </label>
         <div className="input-group">
-          <button onClick={() => increment(-10)} className="btn ">
+          <button onClick={() => increment(-10, name)} className="btn ">
             -
           </button>
           <input
-            value={intervalValue}
+            value={value}
             onChange={handleFormChange}
-            name="interval"
+            name={name}
             type="number"
             className="input input-bordered w-full"
           />
-          <button className="btn" onClick={() => increment(+10)}>
+          <button className="btn" onClick={() => increment(+10, name)}>
             +
           </button>
         </div>
