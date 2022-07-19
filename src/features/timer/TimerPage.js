@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import shortBeep from '../../assets/shortAlert.mp3';
+import longBeep from '../../assets/longAlert.mp3';
 
 /*
 - set interval for every second or milisecond
@@ -13,38 +15,72 @@ const TimerPage = () => {
     intervals: intervals.times,
     exercises,
   }));
+
+  const longAlert = useRef(new Audio(longBeep));
+  const shortAlert = useRef(new Audio(shortBeep));
+
+
   const [phase, setPhase] = useState('rest');
-  const [time, setTime] = useState(intervals[phase]);
+  const [time, setTime] = useState(null);
   const [icount, setIcount] = useState(1);
-  const [isRunning, toggleRunning] = useState(false);
-  const tick = () => {
-    setTime((time) => time - 0.1);
-  };
+  const [isRunning, setRunning] = useState(false);
+
+  const toggleRunning = () => {
+    setRunning(isRunning => !isRunning);
+  }
+
+
+  const reset = () => {
+    setRunning(false);
+    setPhase('rest');
+    setIcount(1);
+    setTime(intervals['rest']);
+  }
 
   const getNextPhase = (phase, intervalCount, numExercises) => {
-    if (phase === 'rest' || phase === 'break') {
+    if (phase === 'rest' || phase === 'longBreak') {
       return 'work';
-    } else if ((intervalCount + 1) % numExercises === 0) {
-      return 'break';
+    } else if ((intervalCount) % numExercises === 0) {
+      return 'longBreak';
     } else {
       return 'rest';
     }
   };
 
+  // listen to changes after loading local storage
+  useEffect(() => {
+    setTime(intervals[phase]);
+  }, [intervals]) 
+  
+  const playSounds = (time) => {
+    if (isRunning) {
+      if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
+      if (time === 1) longAlert.current.play();
+    }
+  }
+
   // listen to timer
   useEffect(() => {
-    if (time < 0.1) {
+    playSounds(time, isRunning);
+    if (time !== null && time <= 0.1) {
+      // triggering from default values
       const nextPhase = getNextPhase(phase, icount, exercises.length);
       if (nextPhase !== 'work') {
         setIcount(icount + 1);
       }
       setTime(intervals[nextPhase]);
+
       setPhase(nextPhase);
     }
   }, [time]);
 
+  const tick = () => {
+    setTime((time) => Math.round((time - 0.1)* 10) / 10);
+  };
+
   // set phase timer
   useEffect(() => {
+    // handle pauses
     if (isRunning) {
       const id = setInterval(tick, 100);
       return () => {
@@ -56,29 +92,33 @@ const TimerPage = () => {
   const progressColor = phase === 'rest' ? 'accent' : 'info';
   const percentComplete = (time / intervals[phase]) * 100;
   const progress = phase !== 'work' ? percentComplete : 100 - percentComplete;
-  const count = phase !== 'work' ? time : intervals[phase] - time;
 
   return (
     <div className="timer-page p-3 w-full flex justify-center">
-      <div className="content-wrapper max-w-md w-full">
-        <div className="max-w-lg">{Math.round(count * 100) / 100}</div>
-        <div className="flex justify-end w-full">
-          <progress
-            className={`progress progress-${progressColor} w-56`}
-            value={progress}
-            max="100"
-          ></progress>
-          {exercises.length ? (
-            <div className="badge badge-primary">
-              {exercises[icount-1 % exercises.length].name}
-            </div>
-          ) : null}
-          {icount + ' / ' + exercises.length}
+      { time === null ? null :  
+        <div className="content-wrapper max-w-md w-full">
+          <div className="max-w-lg">{Math.ceil(time)}</div>
+          <div className="flex justify-end w-full">
+            <progress
+              className={`progress progress-${progressColor} w-56`}
+              value={progress}
+              max="100"
+            ></progress>
+            {exercises.length ? (
+              <div className="badge badge-primary">
+                {exercises[(icount-1) % exercises.length].name}
+              </div>
+            ) : null}
+            {icount + ' / ' + exercises.length}
+          </div>
+          <button onClick={() => toggleRunning()}>
+            {isRunning ? 'Pause' : 'Play'}{' '}
+          </button>
+          <button onClick={reset}>
+            Reset
+          </button>
         </div>
-        <button onClick={() => toggleRunning((isRunning) => !isRunning)}>
-          {isRunning ? 'Pause' : 'Play'}{' '}
-        </button>
-      </div>
+      }
     </div>
   );
 };

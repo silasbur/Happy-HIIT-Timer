@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { times: { work: 45, rest: 15, break: 100 }, inputs: { break: 100, interval: 60, ratio: 0.75 }};
+const initialState = { times: { work: null, rest: null, longBreak: null }, inputs: { longBreak: null, interval: null, ratio: null }};
 
-const calcTimes = ({ ratio, interval, break: b }) => {
+const calcTimes = ({ ratio, interval, longBreak }) => {
   const work = Math.round(ratio * interval);
   const rest = interval - work;
-  return { rest, work, break: b };
+  return { rest, work, longBreak };
 };
 
 export const intervalsSlice = createSlice({

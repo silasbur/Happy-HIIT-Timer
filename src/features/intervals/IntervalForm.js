@@ -14,10 +14,10 @@ const IntervalForm = ({ inputVals, handleFormChange, increment }) => {
       <RatioInput handleFormChange={handleFormChange} value={inputVals.ratio} />
 
       <IntervalInput
-        value={inputVals.break}
+        value={inputVals.longBreak}
         handleFormChange={handleFormChange}
         increment={increment}
-        name="break"
+        name="longBreak"
         label="Break between sets in seconds"
       />
     </>

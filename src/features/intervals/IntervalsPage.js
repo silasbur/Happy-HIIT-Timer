@@ -31,7 +31,6 @@ const IntervalsPage = () => {
   };
 
   const handleFormChange = (evt) => {
-    console.log(+evt.target.value);
     const inputValues = { ...inputs, [evt.target.name]: +evt.target.value };
     updateIntervals(inputValues);
   };
@@ -43,27 +42,32 @@ const IntervalsPage = () => {
       updateIntervals(inputValues);
     }
   };
+
+
   return (
     <div className="timer-page p-3 w-full flex justify-center">
-      <div className="content-wrapper max-w-md w-full">
-        <div className="max-w-lg">
-          <IntervalForm
-            inputVals={inputs}
-            handleFormChange={handleFormChange}
-            increment={increment}
-          />
+      {inputs.interval === null ? null :
+        <div className="content-wrapper max-w-md w-full">
+          <div className="max-w-lg">
+            <IntervalForm
+              inputVals={inputs}
+              handleFormChange={handleFormChange}
+              increment={increment}
+            />
+            
+          </div>
+          <div className="py-4">
+            <div>Work: {times.work}</div>
+            <div>Rest: {times.rest}</div>
+            <div>Break: {inputs.longBreak}</div>
+          </div>
+          <div className="flex justify-end w-full">
+            <button className="btn btn-primary btn-lg" onClick={navigateToNext}>
+              {'>'}
+            </button>
+          </div>
         </div>
-        <div className="py-4">
-          <div>Work: {times.work}</div>
-          <div>Rest: {times.rest}</div>
-          <div>Break: {inputs.break}</div>
-        </div>
-        <div className="flex justify-end w-full">
-          <button className="btn btn-primary btn-lg" onClick={navigateToNext}>
-            {'>'}
-          </button>
-        </div>
-      </div>
+      }
     </div>
   );
 };

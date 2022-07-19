@@ -14,6 +14,8 @@ const App = () => {
     const intervals = localStorage.getItem('intervals');
     if (exercises) dispatch(setExercises(JSON.parse(exercises)));
     if (intervals) dispatch(setIntervals(JSON.parse(intervals)));
+    else dispatch(setIntervals({longBreak: 90, interval: 4, ratio: 0.75}));
+
   }, []);
 
   return (
