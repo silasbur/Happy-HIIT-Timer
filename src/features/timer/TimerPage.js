@@ -19,28 +19,27 @@ const TimerPage = () => {
   const longAlert = useRef(new Audio(longBeep));
   const shortAlert = useRef(new Audio(shortBeep));
 
-
   const [phase, setPhase] = useState('rest');
   const [time, setTime] = useState(null);
   const [icount, setIcount] = useState(1);
   const [isRunning, setRunning] = useState(false);
+  const [isSoundOn, setSound] = useState(true);
 
   const toggleRunning = () => {
-    setRunning(isRunning => !isRunning);
-  }
-
+    setRunning((isRunning) => !isRunning);
+  };
 
   const reset = () => {
     setRunning(false);
     setPhase('rest');
     setIcount(1);
     setTime(intervals['rest']);
-  }
+  };
 
   const getNextPhase = (phase, intervalCount, numExercises) => {
     if (phase === 'rest' || phase === 'longBreak') {
       return 'work';
-    } else if ((intervalCount) % numExercises === 0) {
+    } else if (intervalCount % numExercises === 0) {
       return 'longBreak';
     } else {
       return 'rest';
@@ -50,18 +49,20 @@ const TimerPage = () => {
   // listen to changes after loading local storage
   useEffect(() => {
     setTime(intervals[phase]);
-  }, [intervals]) 
-  
+  }, [intervals]);
+
   const playSounds = (time) => {
     if (isRunning) {
       if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
       if (time === 1) longAlert.current.play();
     }
-  }
+  };
 
   // listen to timer
   useEffect(() => {
-    playSounds(time, isRunning);
+    if (isSoundOn) {
+      playSounds(time, isRunning);
+    }
     if (time !== null && time <= 0.1) {
       // triggering from default values
       const nextPhase = getNextPhase(phase, icount, exercises.length);
@@ -75,7 +76,7 @@ const TimerPage = () => {
   }, [time]);
 
   const tick = () => {
-    setTime((time) => Math.round((time - 0.1)* 10) / 10);
+    setTime((time) => Math.round((time - 0.1) * 10) / 10);
   };
 
   // set phase timer
@@ -95,7 +96,7 @@ const TimerPage = () => {
 
   return (
     <div className="timer-page p-3 w-full flex justify-center">
-      { time === null ? null :  
+      {time === null ? null : (
         <div className="content-wrapper max-w-md w-full">
           <div className="max-w-lg">{Math.ceil(time)}</div>
           <div className="flex justify-end w-full">
@@ -106,7 +107,7 @@ const TimerPage = () => {
             ></progress>
             {exercises.length ? (
               <div className="badge badge-primary">
-                {exercises[(icount-1) % exercises.length].name}
+                {exercises[(icount - 1) % exercises.length].name}
               </div>
             ) : null}
             {icount + ' / ' + exercises.length}
@@ -114,11 +115,10 @@ const TimerPage = () => {
           <button onClick={() => toggleRunning()}>
             {isRunning ? 'Pause' : 'Play'}{' '}
           </button>
-          <button onClick={reset}>
-            Reset
-          </button>
+          <button onClick={reset}>Reset</button>
+          <button onClick={() => setSound((s) => !s)}>sound {isSoundOn ? null : 'x'}</button>
         </div>
-      }
+      )}
     </div>
   );
 };

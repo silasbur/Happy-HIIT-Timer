@@ -20,7 +20,6 @@ export const exercisesSlice = createSlice({
       if (action.payload === undefined) {
         action.payload = state.length - 1;
       }
-
       state.splice(action.payload, 1)
     },
   },
