@@ -1,6 +1,4 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-// import { fetchExercises } from './exercisesAPI';
-
 
 const initialState = [];
 
