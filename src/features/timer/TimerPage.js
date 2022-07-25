@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import shortBeep from '../../assets/shortAlert.mp3';
 import longBeep from '../../assets/longAlert.mp3';
@@ -49,14 +49,14 @@ const TimerPage = () => {
   // listen to changes after loading local storage
   useEffect(() => {
     setTime(intervals[phase]);
-  }, [intervals]);
+  }, [intervals, phase]);
 
-  const playSounds = (time) => {
+  const playSounds = useCallback((time) => {
     if (isRunning) {
       if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
       if (time === 1) longAlert.current.play();
     }
-  };
+  }, [isRunning]);
 
   // listen to timer
   useEffect(() => {
@@ -73,7 +73,7 @@ const TimerPage = () => {
 
       setPhase(nextPhase);
     }
-  }, [time]);
+  }, [time, icount, intervals, exercises.length, isRunning, isSoundOn, playSounds, phase]);
 
   const tick = () => {
     setTime((time) => Math.round((time - 0.1) * 10) / 10);

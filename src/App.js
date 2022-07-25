@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ExercisesPage from './features/exercises/ExercisesPage';
@@ -9,14 +9,18 @@ import { setIntervals } from './features/intervals/IntervalsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const exercises = localStorage.getItem('exercises');
-    const intervals = localStorage.getItem('intervals');
+
+  const stateSetter = useCallback((exercises, intervals) => {
     if (exercises) dispatch(setExercises(JSON.parse(exercises)));
     if (intervals) dispatch(setIntervals(JSON.parse(intervals)));
     else dispatch(setIntervals({longBreak: 90, interval: 4, ratio: 0.75}));
+  }, [dispatch])
 
-  }, []);
+  useEffect(() => {
+    const exercises = localStorage.getItem('exercises');
+    const intervals = localStorage.getItem('intervals');
+    stateSetter(exercises, intervals);
+  }, [stateSetter]);
 
   return (
     <Routes>

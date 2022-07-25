@@ -21,7 +21,7 @@ const ExercisesPage = () => {
 
   useEffect(() => {
     if (updateOk) localStorage.setItem('exercises', JSON.stringify(exercises));
-  }, [exercises]);
+  }, [exercises, updateOk]);
 
   const isMobile = window.innerwidth < 600;
 
