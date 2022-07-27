@@ -98,7 +98,7 @@ export const RatioInput = ({ handleFormChange, value }) => {
         min="0"
         max="1"
         value={value}
-        step="0.125"
+        step="0.01"
         className="range"
       />
       <div className="w-full flex justify-between text-xs px-2">

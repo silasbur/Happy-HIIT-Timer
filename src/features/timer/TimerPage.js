@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import shortBeep from '../../assets/shortAlert.mp3';
 import longBeep from '../../assets/longAlert.mp3';
+import PageLayout from '../../components/PageLayout';
 
 /*
 - set interval for every second or milisecond
@@ -51,12 +52,15 @@ const TimerPage = () => {
     setTime(intervals[phase]);
   }, [intervals, phase]);
 
-  const playSounds = useCallback((time) => {
-    if (isRunning) {
-      if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
-      if (time === 1) longAlert.current.play();
-    }
-  }, [isRunning]);
+  const playSounds = useCallback(
+    (time) => {
+      if (isRunning) {
+        if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
+        if (time === 1) longAlert.current.play();
+      }
+    },
+    [isRunning]
+  );
 
   // listen to timer
   useEffect(() => {
@@ -73,7 +77,16 @@ const TimerPage = () => {
 
       setPhase(nextPhase);
     }
-  }, [time, icount, intervals, exercises.length, isRunning, isSoundOn, playSounds, phase]);
+  }, [
+    time,
+    icount,
+    intervals,
+    exercises.length,
+    isRunning,
+    isSoundOn,
+    playSounds,
+    phase,
+  ]);
 
   const tick = () => {
     setTime((time) => Math.round((time - 0.1) * 10) / 10);
@@ -95,7 +108,7 @@ const TimerPage = () => {
   const progress = phase !== 'work' ? percentComplete : 100 - percentComplete;
 
   return (
-    <div className="timer-page p-3 w-full flex justify-center">
+    <PageLayout page="timer">
       {time === null ? null : (
         <div className="content-wrapper max-w-md w-full">
           <div className="max-w-lg">{Math.ceil(time)}</div>
@@ -116,10 +129,12 @@ const TimerPage = () => {
             {isRunning ? 'Pause' : 'Play'}{' '}
           </button>
           <button onClick={reset}>Reset</button>
-          <button onClick={() => setSound((s) => !s)}>sound {isSoundOn ? null : 'x'}</button>
+          <button onClick={() => setSound((s) => !s)}>
+            sound {isSoundOn ? null : 'x'}
+          </button>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 };
 

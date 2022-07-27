@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { removeExercise, setExercises } from './exercisesSlice';
 import React, { useRef } from 'react';
-import {useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
+import { ReactComponent as GripIcon } from '../../assets/grip.svg';
 
 const DRAG_TYPE = 'EXERCISE';
 
@@ -29,21 +30,19 @@ const ExercisesList = () => {
   const [, drop] = useDrop(() => ({ accept: DRAG_TYPE }));
 
   return (
-      <div className="overflow-x-auto py-4">
-        <div className="Here">
-          <div ref={drop}>
-            {exercises.map(({ name, id }, idx) => (
-              <Exercise
-                moveCardHandler={moveCardHandler}
-                name={name}
-                key={id}
-                index={idx}
-                id={id}
-              />
-            ))}
-          </div>
-        </div>
+    <div className="overflow-x-auto py-4">
+      <div className="p-4 bg-gray-100" ref={drop}>
+        {exercises.map(({ name, id }, idx) => (
+          <Exercise
+            moveCardHandler={moveCardHandler}
+            name={name}
+            key={id}
+            index={idx}
+            id={id}
+          />
+        ))}
       </div>
+    </div>
   );
 };
 
@@ -99,7 +98,7 @@ export const Exercise = ({ name, id, index, moveCardHandler }) => {
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { index, name }, 
+    item: { index, name },
     type: DRAG_TYPE,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -118,12 +117,14 @@ export const Exercise = ({ name, id, index, moveCardHandler }) => {
   drag(drop(ref));
 
   return (
-    <div ref={ref} style={{opacity}}>
-      <div>{name}</div>
-      <div>
-        <button onClick={handleRemove}>X</button>
-        <button>Edit</button>
-      </div>
+    <div
+      ref={ref}
+      style={{ opacity }}
+      className="border border-black flex justify-between my-1 p-2 truncate"
+    >
+      <GripIcon />
+      {name}
+      <button onClick={handleRemove}>X</button>
     </div>
   );
 };

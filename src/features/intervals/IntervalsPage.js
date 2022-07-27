@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import IntervalForm from './IntervalForm';
 import { setIntervals } from './IntervalsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import PageLayout from '../../components/PageLayout';
 
 /*
 - Time per interval
@@ -43,10 +44,9 @@ const IntervalsPage = () => {
     }
   };
 
-
   return (
-    <div className="timer-page p-3 w-full flex justify-center">
-      {inputs.interval === null ? null :
+    <PageLayout title="Timing" page="intervals">
+      {inputs.interval === null ? null : (
         <div className="content-wrapper max-w-md w-full">
           <div className="max-w-lg">
             <IntervalForm
@@ -54,21 +54,15 @@ const IntervalsPage = () => {
               handleFormChange={handleFormChange}
               increment={increment}
             />
-            
           </div>
           <div className="py-4">
             <div>Work: {times.work}</div>
             <div>Rest: {times.rest}</div>
             <div>Break: {inputs.longBreak}</div>
           </div>
-          <div className="flex justify-end w-full">
-            <button className="btn btn-primary btn-lg" onClick={navigateToNext}>
-              {'>'}
-            </button>
-          </div>
         </div>
-      }
-    </div>
+      )}
+    </PageLayout>
   );
 };
 
