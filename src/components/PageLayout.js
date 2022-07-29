@@ -22,7 +22,7 @@ const PageLayout = (props) => {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="max-w-sm">
+      <div className="max-w-sm w-full">
         <div className="navbar bg-gray-100">
           <div className="navbar-start">
             {props.page === 'exercises' ? null : (

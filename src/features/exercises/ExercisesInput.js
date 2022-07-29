@@ -16,7 +16,7 @@ const ExercisesInput = () => {
   };
 
   return (
-    <form onSubmit={handleAddExercise} className="form-control py-4">
+    <form onSubmit={handleAddExercise} className="form-control">
       <div className="input-group">
         <input
           minLength="1"
