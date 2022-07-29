@@ -20,6 +20,8 @@ const PageLayout = (props) => {
     navigate(prevPageMap[props.page]);
   };
 
+  const buttonType = props.page === 'timer' ? 'primary' : 'ghost';
+
   return (
     <div className="w-full flex justify-center">
       <div className="max-w-sm w-full">
@@ -28,7 +30,7 @@ const PageLayout = (props) => {
             {props.page === 'exercises' ? null : (
               <button
                 onClick={navigateToPrevious}
-                className="btn btn-ghost btn-circle"
+                className={`btn btn-${buttonType} btn-circle`}
               >
                 {'<'}
               </button>
@@ -41,7 +43,7 @@ const PageLayout = (props) => {
             {props.page !== 'timer' ? (
               <button
                 onClick={navigateToNext}
-                className="btn btn-ghost btn-circle"
+                className="btn btn-primary btn-circle"
               >
                 {'>'}
               </button>
