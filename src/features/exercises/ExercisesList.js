@@ -120,7 +120,7 @@ export const Exercise = ({ name, id, index, moveCardHandler }) => {
     <div
       ref={ref}
       style={{ opacity }}
-      className="border border-black flex justify-between my-1 p-2 truncate items-center"
+      className="border border-black flex justify-between my-1 p-2 truncate items-center bg-gray-100"
     >
       <GripIcon />
       {name}

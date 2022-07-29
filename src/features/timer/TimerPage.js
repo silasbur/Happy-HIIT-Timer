@@ -132,7 +132,7 @@ const TimerPage = () => {
               </div>
             ) : null}
           </div>
-          <div className="flex justify-around my-3">
+          <div className="flex justify-around my-4">
             <button
               className="btn btn-primary rounded-none"
               onClick={() => toggleRunning()}
