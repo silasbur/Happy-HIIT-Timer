@@ -20,11 +20,7 @@ const IntervalsPage = () => {
     times: s.intervals.times,
   }));
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const navigateToNext = () => {
-    navigate('/timer');
-  };
 
   const updateIntervals = (values) => {
     dispatch(setIntervals(values));

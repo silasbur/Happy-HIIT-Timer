@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ExercisesList from './ExercisesList';
 import ExercisesInput from './ExercisesInput';
-import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
