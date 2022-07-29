@@ -30,8 +30,8 @@ const ExercisesList = () => {
   const [, drop] = useDrop(() => ({ accept: DRAG_TYPE }));
 
   return (
-    <div className="overflow-x-auto py-4">
-      <div className="p-4 bg-gray-100" ref={drop}>
+    <div className="overflow-x-auto py-2">
+      <div ref={drop}>
         {exercises.map(({ name, id }, idx) => (
           <Exercise
             moveCardHandler={moveCardHandler}
@@ -120,7 +120,7 @@ export const Exercise = ({ name, id, index, moveCardHandler }) => {
     <div
       ref={ref}
       style={{ opacity }}
-      className="border border-black flex justify-between my-1 p-2 truncate"
+      className="border border-black flex justify-between my-1 p-2 truncate items-center"
     >
       <GripIcon />
       {name}

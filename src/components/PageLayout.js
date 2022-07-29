@@ -17,39 +17,39 @@ const PageLayout = (props) => {
     navigate(nextPageMap[props.page]);
   };
   const navigateToPrevious = () => {
-    navigate(prevPageMap[props.page])
-  }
+    navigate(prevPageMap[props.page]);
+  };
 
   return (
-    <div>
-      <div className="navbar bg-base-100">
-        <div className="navbar-start">
-          {props.page === 'exercises' ? null : (
-            <button
-              onClick={navigateToPrevious}
-              className="btn btn-ghost btn-circle"
-            >
-              {'<'}
-            </button>
-          )}
+    <div className="w-full flex justify-center">
+      <div className="max-w-sm">
+        <div className="navbar bg-gray-100">
+          <div className="navbar-start">
+            {props.page === 'exercises' ? null : (
+              <button
+                onClick={navigateToPrevious}
+                className="btn btn-ghost btn-circle"
+              >
+                {'<'}
+              </button>
+            )}
+          </div>
+          <div className="navbar-center">
+            <span className="text-xl">Happy HIIT Timer</span>
+          </div>
+          <div className="navbar-end">
+            {props.page !== 'timer' ? (
+              <button
+                onClick={navigateToNext}
+                className="btn btn-ghost btn-circle"
+              >
+                {'>'}
+              </button>
+            ) : null}
+          </div>
         </div>
-        <div class="navbar-center">
-          <a class="text-xl">Happy HIIT Timer</a>
-        </div>
-        <div class="navbar-end">
-          {props.page !== 'timer' ? (
-            <button
-              onClick={navigateToNext}
-              className="btn btn-ghost btn-circle"
-            >
-              {'>'}
-            </button>
-          ) : null}
-        </div>
-      </div>
-      <div className={`${props.page}-page p-3 w-full flex justify-center`}>
-        <div className="content-wrapper max-w-md w-full">
-          {props.children}
+        <div className={`${props.page}-page p-3`}>
+          <div className="page-content-wrapper">{props.children}</div>
         </div>
       </div>
     </div>

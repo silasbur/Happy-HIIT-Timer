@@ -17,8 +17,10 @@ const ExercisesInput = () => {
 
   return (
     <form onSubmit={handleAddExercise} className="form-control py-4">
-      <div className="input-group w-full">
+      <div className="input-group">
         <input
+          minLength="1"
+          maxLength="30"
           value={input}
           onChange={(evt) => setInput(evt.target.value)}
           type="text"

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import shortBeep from '../../assets/shortAlert.mp3';
 import longBeep from '../../assets/longAlert.mp3';
 import PageLayout from '../../components/PageLayout';
+import './timerPage.css';
 
 /*
 - set interval for every second or milisecond
@@ -107,31 +108,47 @@ const TimerPage = () => {
   const percentComplete = (time / intervals[phase]) * 100;
   const progress = phase !== 'work' ? percentComplete : 100 - percentComplete;
 
+  const textDecoration = isSoundOn ? null : 'line-through';
+
   return (
     <PageLayout page="timer">
       {time === null ? null : (
-        <div className="content-wrapper max-w-md w-full">
-          <div className="max-w-lg">{Math.ceil(time)}</div>
-          <div className="flex justify-end w-full">
-            <progress
-              className={`progress progress-${progressColor} w-56`}
-              value={progress}
-              max="100"
-            ></progress>
+        <div className="content-wrapper">
+          <progress
+            className={`progress progress-${progressColor}`}
+            value={progress}
+            max="100"
+          ></progress>
+          <div className="text-9xl flex justify-center">{Math.ceil(time)} </div>
+          <div className="flex justify-around">
             {exercises.length ? (
-              <div className="badge badge-primary">
-                {exercises[(icount - 1) % exercises.length].name}
+              <div className="w-full h-16 flex items-center set-info">
+                <div className="w-9/12 h-full inline-block text-center bg-gray-200">
+                  {exercises[(icount - 1) % exercises.length].name}
+                </div>
+                <div className="w-3/12 h-full inline-block text-center bg-gray-100">
+                  {icount + '/' + exercises.length}
+                </div>
               </div>
             ) : null}
-            {icount + ' / ' + exercises.length}
           </div>
-          <button onClick={() => toggleRunning()}>
-            {isRunning ? 'Pause' : 'Play'}{' '}
-          </button>
-          <button onClick={reset}>Reset</button>
-          <button onClick={() => setSound((s) => !s)}>
-            sound {isSoundOn ? null : 'x'}
-          </button>
+          <div className="flex justify-around">
+            <button
+              className="btn btn-primary rounded-none"
+              onClick={() => toggleRunning()}
+            >
+              {isRunning ? 'Pause' : 'Play'}
+            </button>
+            <button className="btn btn-secondary rounded-none" onClick={reset}>
+              Reset
+            </button>
+            <button
+              className={`${textDecoration} btn rounded-none`}
+              onClick={() => setSound((s) => !s)}
+            >
+              Sound
+            </button>
+          </div>
         </div>
       )}
     </PageLayout>

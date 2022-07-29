@@ -29,11 +29,11 @@ export const IntervalInput = ({
   handleFormChange,
   value,
   name,
-  label
+  label,
 }) => {
   return (
     <>
-      <div className="form-control py-4">
+      <div className="form-control py-2">
         <label className="label">
           <span className="label-text">{label}</span>
         </label>

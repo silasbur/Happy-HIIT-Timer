@@ -47,18 +47,18 @@ const IntervalsPage = () => {
   return (
     <PageLayout title="Timing" page="intervals">
       {inputs.interval === null ? null : (
-        <div className="content-wrapper max-w-md w-full">
-          <div className="max-w-lg">
+        <div className="content-wrapper">
+          <div className="flex justify-between">
+            <div>Work: {times.work}</div>
+            <div>Rest: {times.rest}</div>
+            <div>Break: {inputs.longBreak}</div>
+          </div>
+          <div>
             <IntervalForm
               inputVals={inputs}
               handleFormChange={handleFormChange}
               increment={increment}
             />
-          </div>
-          <div className="py-4">
-            <div>Work: {times.work}</div>
-            <div>Rest: {times.rest}</div>
-            <div>Break: {inputs.longBreak}</div>
           </div>
         </div>
       )}

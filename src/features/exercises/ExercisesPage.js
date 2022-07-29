@@ -24,12 +24,10 @@ const ExercisesPage = () => {
 
   return (
     <PageLayout title="Exercises" page="exercises">
-      <div className="max-w-lg">
         <ExercisesInput />
         <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
           <ExercisesList />
         </DndProvider>
-      </div>
     </PageLayout>
   );
 };
