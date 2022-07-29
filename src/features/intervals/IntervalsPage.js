@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
 import IntervalForm from './IntervalForm';
 import { setIntervals } from './IntervalsSlice';
 import { useDispatch, useSelector } from 'react-redux';
