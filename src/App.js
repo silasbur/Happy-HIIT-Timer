@@ -24,10 +24,10 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<ExercisesPage />} />
+      <Route path="/exercises" element={<ExercisesPage />} />
       <Route path="/intervals" element={<IntervalsPage />} />
       <Route path="/timer" element={<TimerPage />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/exercises" />} />
     </Routes>
   );
 };

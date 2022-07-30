@@ -14,10 +14,8 @@ default to 1/4 rest
 */
 
 const IntervalsPage = () => {
-  const { inputs, times } = useSelector((s) => ({
-    inputs: s.intervals.inputs,
-    times: s.intervals.times,
-  }));
+  const intervals = useSelector((s) => s.intervals);
+  const { inputs, times } = intervals;
 
   const dispatch = useDispatch();
 
@@ -27,13 +25,13 @@ const IntervalsPage = () => {
   };
 
   const handleFormChange = (evt) => {
-    const inputValues = { ...inputs, [evt.target.name]: +evt.target.value };
+    const inputValues = { ...inputs, [evt.target.name]: evt.target.value };
     updateIntervals(inputValues);
   };
 
   const increment = (delta, name) => {
-    const incrementedDelta = inputs[name] + delta;
-    const inputValues = { ...inputs, [name]: incrementedDelta };
+    const incrementedDelta = +inputs[name] + delta; // convert to string to number for addition
+    const inputValues = { ...inputs, [name]: '' + incrementedDelta }; //convert to string
     if (incrementedDelta > 0) {
       updateIntervals(inputValues);
     }
