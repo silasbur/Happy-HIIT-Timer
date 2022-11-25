@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import shortBeep from '../../assets/shortAlert.mp3';
-import longBeep from '../../assets/longAlert.mp3';
+// import shortBeep from '../../assets/shortAlert.mp3';
+// import longBeep from '../../assets/longAlert.mp3';
 import PageLayout from '../../components/PageLayout';
 import './timerPage.css';
 import truncate from '../../utils/truncate'
