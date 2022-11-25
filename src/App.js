@@ -6,6 +6,7 @@ import IntervalsPage from './features/intervals/IntervalsPage';
 import TimerPage from './features/timer/TimerPage';
 import { setExercises } from './features/exercises/exercisesSlice';
 import { setIntervals } from './features/intervals/IntervalsSlice';
+import './App.css';
 
 const App = () => {
   const dispatch = useDispatch();

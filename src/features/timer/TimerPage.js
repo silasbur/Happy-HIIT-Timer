@@ -57,8 +57,14 @@ const TimerPage = () => {
   const playSounds = useCallback(
     (time) => {
       if (isRunning) {
-        if (time === 4 || time === 3 || time === 2) shortAlert.current.play();
-        if (time === 1) longAlert.current.play();
+        if (time === 4 || time === 3 || time === 2) {
+          shortAlert.current.play();
+        }
+        if (time === 1) {
+          longAlert.current.play();
+        }
+        shortAlert.current.pause();
+        longAlert.current.pause();
       }
     },
     [isRunning]
