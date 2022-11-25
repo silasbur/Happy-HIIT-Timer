@@ -25,7 +25,7 @@ const PageLayout = (props) => {
   return (
     <div className="w-full flex justify-center">
       <div className="max-w-sm w-full">
-        <div className="navbar bg-gray-200">
+        <nav className="navbar bg-gray-200">
           <div className="navbar-start">
             {props.page === 'exercises' ? null : (
               <button
@@ -37,7 +37,7 @@ const PageLayout = (props) => {
             )}
           </div>
           <div className="navbar-center">
-            <span className="text-xl">Happy HIIT Timer</span>
+            <span className="text-xl text-charcoal">Happy HIIT Timer</span>
           </div>
           <div className="navbar-end">
             {props.page !== 'timer' ? (
@@ -49,7 +49,7 @@ const PageLayout = (props) => {
               </button>
             ) : null}
           </div>
-        </div>
+        </nav>
         <div className={`${props.page}-page p-3`}>
           <div className="page-content-wrapper">{props.children}</div>
         </div>

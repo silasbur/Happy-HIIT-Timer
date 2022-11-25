@@ -4,6 +4,7 @@ import shortBeep from '../../assets/shortAlert.mp3';
 import longBeep from '../../assets/longAlert.mp3';
 import PageLayout from '../../components/PageLayout';
 import './timerPage.css';
+import truncate from '../../utils/truncate'
 
 /*
 - set interval for every second or milisecond
@@ -65,7 +66,7 @@ const TimerPage = () => {
 
   // listen to timer
   useEffect(() => {
-    if (isSoundOn) {
+    if (isSoundOn && time <= 5) {
       playSounds(time, isRunning);
     }
     if (time !== null && time <= 0.1) {
@@ -115,18 +116,22 @@ const TimerPage = () => {
       {time === null ? null : (
         <div className="content-wrapper">
           <progress
-            className={`progress progress-${progressColor}`}
+            className={`progress progress-${progressColor} h-full`}
             value={progress}
             max="100"
           ></progress>
-          <div className="text-9xl flex justify-center">{Math.ceil(time)} </div>
+          <div className="text-9xl flex">
+            <div className="w-3/12 flex justify-end items-center text-2xl"></div>
+            <div className="flex grow justify-center items-center">{Math.ceil(time)}</div>
+            <div className="w-3/12 flex justify-center items-center text-xl">{phase === 'longBreak' ? 'BREAK' : phase.toUpperCase()}</div>
+          </div>
           <div className="flex justify-around">
             {exercises.length ? (
               <div className="w-full h-16 flex items-center set-info">
-                <div className="w-9/12 h-full inline-block text-center bg-gray-200">
-                  {exercises[(icount - 1) % exercises.length].name}
+                <div className="w-9/12 h-full text-center bg-gray-100 text-charcoal">
+                  {truncate(exercises[(icount - 1) % exercises.length].name, 20)}
                 </div>
-                <div className="w-3/12 h-full inline-block text-center bg-gray-100">
+                <div className="w-3/12 h-full text-center bg-gray-200 text-charcoal">
                   {icount + '/' + exercises.length}
                 </div>
               </div>
