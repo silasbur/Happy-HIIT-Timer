@@ -19,8 +19,8 @@ const TimerPage = () => {
     exercises,
   }));
 
-  const longAlert = useRef(new Audio(longBeep));
-  const shortAlert = useRef(new Audio(shortBeep));
+  // const longAlert = useRef(new Audio(longBeep));
+  // const shortAlert = useRef(new Audio(shortBeep));
 
   const [phase, setPhase] = useState('rest');
   const [time, setTime] = useState(null);
