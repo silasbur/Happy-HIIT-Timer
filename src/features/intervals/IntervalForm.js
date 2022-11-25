@@ -71,7 +71,7 @@ export const RatioInput = ({ handleFormChange, value }) => {
         max="1"
         value={value}
         step="0.01"
-        className="range touch-manipulation"
+        className="range"
       />
       <div className="w-full flex justify-between text-xs px-2">
         <span>0</span>

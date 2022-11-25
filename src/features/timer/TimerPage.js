@@ -58,13 +58,11 @@ const TimerPage = () => {
     (time) => {
       if (isRunning) {
         if (time === 4 || time === 3 || time === 2) {
-          shortAlert.current.play();
+          // shortAlert.current.play();
         }
         if (time === 1) {
-          longAlert.current.play();
+          // longAlert.current.play();
         }
-        shortAlert.current.pause();
-        longAlert.current.pause();
       }
     },
     [isRunning]
