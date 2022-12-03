@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
-// import shortBeep from '../../assets/shortAlert.mp3';
-// import longBeep from '../../assets/longAlert.mp3';
+import shortBeep from '../../assets/shortAlert.mp3';
+import longBeep from '../../assets/longAlert.mp3';
 import PageLayout from '../../components/PageLayout';
 import './timerPage.css';
 import truncate from '../../utils/truncate'
@@ -19,8 +19,8 @@ const TimerPage = () => {
     exercises,
   }));
 
-  // const longAlert = useRef(new Audio(longBeep));
-  // const shortAlert = useRef(new Audio(shortBeep));
+  const longAlert = useRef(new Audio(longBeep));
+  const shortAlert = useRef(new Audio(shortBeep));
 
   const [phase, setPhase] = useState('rest');
   const [time, setTime] = useState(null);
@@ -58,10 +58,10 @@ const TimerPage = () => {
     (time) => {
       if (isRunning) {
         if (time === 4 || time === 3 || time === 2) {
-          // shortAlert.current.play();
+          shortAlert.current.play();
         }
         if (time === 1) {
-          // longAlert.current.play();
+          longAlert.current.play();
         }
       }
     },
@@ -73,7 +73,7 @@ const TimerPage = () => {
     if (isSoundOn && time <= 5) {
       playSounds(time, isRunning);
     }
-    if (time !== null && time <= 0.1) {
+    if (time !== null && time < 1) {
       // triggering from default values
       const nextPhase = getNextPhase(phase, icount, exercises.length);
       if (nextPhase !== 'work') {
@@ -95,14 +95,14 @@ const TimerPage = () => {
   ]);
 
   const tick = () => {
-    setTime((time) => Math.round((time - 0.1) * 10) / 10);
+    setTime((time) => time - 1);
   };
 
   // set phase timer
   useEffect(() => {
     // handle pauses
     if (isRunning) {
-      const id = setInterval(tick, 100);
+      const id = setInterval(tick, 1000);
       return () => {
         clearInterval(id);
       };
