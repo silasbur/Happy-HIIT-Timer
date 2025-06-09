@@ -1,23 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { times: { work: null, rest: null, longBreak: null }, inputs: { longBreak: '', interval: '', ratio: '' }};
+const initialState = {
+  times: { work: null, rest: null, longBreak: null, interval: null },
+  inputs: { longBreak: "", work: "", rest: "" },
+};
 
-const calcTimes = ({ ratio, interval, longBreak }) => {
-  const work = Math.round(ratio * interval);
-  const rest = interval - work;
+const calcTimes = ({ work, rest, longBreak }) => {
+  work = +work;
+  rest = +rest;
   longBreak = +longBreak;
-  return { rest, work, longBreak };
+  const interval = work + rest;
+  return { rest, work, longBreak, interval };
 };
 
 export const intervalsSlice = createSlice({
-  name: 'intervals',
+  name: "intervals",
   initialState,
   reducers: {
     setIntervals: (state, action) => {
       state.inputs = action.payload;
-      state.times = calcTimes(action.payload)
+      state.times = calcTimes(action.payload);
       return state;
-    }
+    },
   },
 });
 

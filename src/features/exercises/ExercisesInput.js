@@ -1,17 +1,17 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { addExercise } from './exercisesSlice';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { addExercise } from "./exercisesSlice";
 
 const ExercisesInput = () => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
-  const handleAddExercise = evt => {
+  const handleAddExercise = (evt) => {
     evt.preventDefault();
-    if (input !== '') {
+    if (input !== "") {
       dispatch(addExercise(input));
-      setInput('');
+      setInput("");
     }
   };
 
@@ -27,9 +27,7 @@ const ExercisesInput = () => {
           placeholder="Add exercise"
           className="input input-bordered w-full"
         />
-        <button className="btn btn-square">
-          +
-        </button>
+        <button className="btn btn-square">+</button>
       </div>
     </form>
   );

@@ -1,17 +1,23 @@
-import React from 'react';
+import React from "react";
 
 const IntervalForm = ({ inputVals, handleFormChange, increment }) => {
   return (
     <>
       <IntervalInput
-        value={inputVals.interval}
+        value={inputVals.work}
         handleFormChange={handleFormChange}
         increment={increment}
-        name="interval"
-        label="Interval length in seconds"
+        name="work"
+        label="Work length in seconds"
       />
 
-      <RatioInput handleFormChange={handleFormChange} value={inputVals.ratio} />
+      <IntervalInput
+        value={inputVals.rest}
+        handleFormChange={handleFormChange}
+        increment={increment}
+        name="rest"
+        label="Rest length in seconds"
+      />
 
       <IntervalInput
         value={inputVals.longBreak}
