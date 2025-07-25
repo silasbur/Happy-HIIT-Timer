@@ -4,19 +4,11 @@ const IntervalForm = ({ inputVals, handleFormChange, increment }) => {
   return (
     <>
       <IntervalInput
-        value={inputVals.work}
-        handleFormChange={handleFormChange}
-        increment={increment}
-        name="work"
-        label="Work length in seconds"
-      />
-
-      <IntervalInput
         value={inputVals.rest}
         handleFormChange={handleFormChange}
         increment={increment}
         name="rest"
-        label="Rest length in seconds"
+        label="Rest between exercises"
       />
 
       <IntervalInput
@@ -24,7 +16,7 @@ const IntervalForm = ({ inputVals, handleFormChange, increment }) => {
         handleFormChange={handleFormChange}
         increment={increment}
         name="longBreak"
-        label="Break between sets in seconds"
+        label="Rest between sets"
       />
     </>
   );
@@ -60,30 +52,6 @@ export const IntervalInput = ({
         </div>
       </div>
     </>
-  );
-};
-
-export const RatioInput = ({ handleFormChange, value }) => {
-  return (
-    <div className="form-control">
-      <label className="label">
-        <span className="label-text">Work / rest ratio</span>
-      </label>
-      <input
-        onChange={handleFormChange}
-        name="ratio"
-        type="range"
-        min="0"
-        max="1"
-        value={value}
-        step="0.01"
-        className="range"
-      />
-      <div className="w-full flex justify-between text-xs px-2">
-        <span>0</span>
-        <span>100</span>
-      </div>
-    </div>
   );
 };
 

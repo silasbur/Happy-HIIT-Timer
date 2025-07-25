@@ -1,7 +1,6 @@
 import React from "react";
 import IntervalForm from "./IntervalForm";
-import { setIntervals } from "./IntervalsSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useIntervals } from "../../contexts/IntervalsContext";
 import PageLayout from "../../components/PageLayout";
 
 /*
@@ -11,13 +10,11 @@ import PageLayout from "../../components/PageLayout";
 */
 
 const IntervalsPage = () => {
-  const intervals = useSelector((s) => s.intervals);
+  const { intervals, setIntervals } = useIntervals();
   const { inputs, times } = intervals;
 
-  const dispatch = useDispatch();
-
   const updateIntervals = (values) => {
-    dispatch(setIntervals(values));
+    setIntervals(values);
     localStorage.setItem("intervals", JSON.stringify(values));
   };
 
@@ -38,10 +35,8 @@ const IntervalsPage = () => {
     <PageLayout title="Timing" page="intervals">
       {inputs.interval === null ? null : (
         <div className="content-wrapper">
-          <div className="flex justify-between">
-            <div>Work: {times.work}</div>
+          <div className="flex justify-around">
             <div>Rest: {times.rest}</div>
-            <div>Interval: {times.interval}</div>
             <div>Break: {inputs.longBreak}</div>
           </div>
           <div>

@@ -1,10 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { removeExercise, setExercises } from './exercisesSlice';
-import React, { useRef } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { ReactComponent as GripIcon } from '../../assets/grip.svg';
+import { useExercises } from "../../contexts/ExercisesContext";
+import React, { useRef } from "react";
+import truncate from "../../utils/truncate";
+import { useDrag, useDrop } from "react-dnd";
+import { ReactComponent as GripIcon } from "../../assets/grip.svg";
 
-const DRAG_TYPE = 'EXERCISE';
+const DRAG_TYPE = "EXERCISE";
 
 const reorder = (sourceIdx, destinationIdx, list) => {
   const result = [...list];
@@ -15,15 +15,14 @@ const reorder = (sourceIdx, destinationIdx, list) => {
 };
 
 const ExercisesList = () => {
-  const exercises = useSelector((state) => state.exercises);
-  const dispatch = useDispatch();
+  const { exercises, setExercises } = useExercises();
 
   const moveCardHandler = (dragIndex, hoverIndex) => {
     const dragItem = exercises[dragIndex];
 
     if (dragItem) {
       const updatedExercises = reorder(dragIndex, hoverIndex, exercises);
-      dispatch(setExercises(updatedExercises));
+      setExercises(updatedExercises);
     }
   };
 
@@ -31,11 +30,13 @@ const ExercisesList = () => {
 
   return (
     <div className="overflow-x-auto py-2">
+      <h3 className="text-lg">Exercise List</h3>
       <div ref={drop}>
-        {exercises.map(({ name, id }, idx) => (
+        {exercises.map(({ name, time, id }, idx) => (
           <Exercise
             moveCardHandler={moveCardHandler}
             name={name}
+            time={time}
             key={id}
             index={idx}
             id={id}
@@ -46,11 +47,11 @@ const ExercisesList = () => {
   );
 };
 
-export const Exercise = ({ name, id, index, moveCardHandler }) => {
-  const dispatch = useDispatch();
+export const Exercise = ({ name, id, time, index, moveCardHandler }) => {
+  const { removeExercise } = useExercises();
 
   const handleRemove = () => {
-    dispatch(removeExercise(index));
+    removeExercise(index);
   };
 
   const ref = useRef(null);
@@ -120,11 +121,18 @@ export const Exercise = ({ name, id, index, moveCardHandler }) => {
     <div
       ref={ref}
       style={{ opacity }}
-      className="border border-black flex justify-between my-1 p-2 truncate items-center bg-gray-100 text-charcoal"
+      className="border border-gray-300 flex justify-between my-2 p-3 bg-gray-50 text-charcoal rounded-md hover:bg-gray-100 hover:border-gray-400 transition-all duration-150 cursor-grab active:cursor-grabbing"
     >
-      <GripIcon />
-      {name}
-      <button onClick={handleRemove}>X</button>
+      <div className="flex justify-left gap-4 items-center">
+        <GripIcon />
+        <span>
+          <b>{truncate(name, 30)}</b>
+        </span>
+      </div>
+      <div className="justify-right gap-4 flex">
+        <span className="text-gray-600 text-sm font-medium">{time}s</span>
+        <button onClick={handleRemove} className="text-red-500 hover:text-red-700 font-bold">×</button>
+      </div>
     </div>
   );
 };

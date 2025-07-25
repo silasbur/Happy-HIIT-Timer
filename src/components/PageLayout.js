@@ -1,14 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const nextPageMap = {
-  exercises: '/intervals',
-  intervals: '/timer',
+  workouts: "/exercises",
+  exercises: "/intervals",
+  intervals: "/timer",
 };
 
 const prevPageMap = {
-  intervals: '/exercises',
-  timer: '/intervals',
+  intervals: "/exercises",
+  timer: "/intervals",
+  exercises: "/workouts",
 };
 
 const PageLayout = (props) => {
@@ -20,19 +22,19 @@ const PageLayout = (props) => {
     navigate(prevPageMap[props.page]);
   };
 
-  const buttonType = props.page === 'timer' ? 'primary' : 'ghost';
+  const buttonType = props.page === "timer" ? "primary" : "ghost";
 
   return (
     <div className="w-full flex justify-center">
       <div className="max-w-sm w-full">
         <nav className="navbar bg-gray-200">
           <div className="navbar-start">
-            {props.page === 'exercises' ? null : (
+            {props.page === "workouts" ? null : (
               <button
                 onClick={navigateToPrevious}
                 className={`btn btn-${buttonType} btn-circle`}
               >
-                {'<'}
+                {"<"}
               </button>
             )}
           </div>
@@ -40,12 +42,12 @@ const PageLayout = (props) => {
             <span className="text-xl text-charcoal">Happy HIIT Timer</span>
           </div>
           <div className="navbar-end">
-            {props.page !== 'timer' ? (
+            {props.page !== "timer" ? (
               <button
                 onClick={navigateToNext}
                 className="btn btn-primary btn-circle"
               >
-                {'>'}
+                {">"}
               </button>
             ) : null}
           </div>

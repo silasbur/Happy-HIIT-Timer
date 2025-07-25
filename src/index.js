@@ -1,8 +1,8 @@
 import React from 'react';
 import * as serviceWorker from './serviceWorkerRegistration';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { ExercisesProvider } from './contexts/ExercisesContext';
+import { IntervalsProvider } from './contexts/IntervalsContext';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
@@ -13,11 +13,13 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <ExercisesProvider>
+      <IntervalsProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </IntervalsProvider>
+    </ExercisesProvider>
   </React.StrictMode>
 );
 
