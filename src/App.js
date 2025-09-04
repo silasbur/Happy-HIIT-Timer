@@ -1,31 +1,37 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import ExercisesPage from "./features/exercises/ExercisesPage";
-import IntervalsPage from "./features/intervals/IntervalsPage";
-import TimerPage from "./features/timer/TimerPage";
-import WorkoutPage from "./features/workouts/WorkoutPage";
+import ExercisesPage from "./pages/ExercisesPage";
+import IntervalsPage from "./pages/IntervalsPage";
+import TimerPage from "./pages/TimerPage";
+import WorkoutPage from "./pages/WorkoutPage";
+import ConfigPage from "./pages/ConfigPage.js";
 import { useExercises } from "./contexts/ExercisesContext";
 import { useIntervals } from "./contexts/IntervalsContext";
+import { useWorkout } from "./contexts/WorkoutContext";
 import "./App.css";
 
 const App = () => {
   const { setExercises } = useExercises();
   const { setIntervals } = useIntervals();
+  const { selectedWorkout } = useWorkout();
 
   useEffect(() => {
-    const exercises = localStorage.getItem("exercises");
-    const intervals = localStorage.getItem("intervals");
-
-    if (exercises) setExercises(JSON.parse(exercises));
-    if (intervals) setIntervals(JSON.parse(intervals));
-    else setIntervals({ longBreak: 90, rest: 15 });
-  }, []);
+    if (selectedWorkout) {
+      const { exercises, intervals } = selectedWorkout;
+      if (intervals) setIntervals({
+        rest: intervals.rest?.toString() || "",
+        longBreak: intervals.longBreak?.toString() || ""
+      });
+      if (exercises) setExercises(exercises);
+    }
+  }, [selectedWorkout]);
 
   return (
     <Routes>
       <Route path="/workouts" element={<WorkoutPage />} />
+      <Route path="/rest-intervals" element={<IntervalsPage />} />
       <Route path="/exercises" element={<ExercisesPage />} />
-      <Route path="/intervals" element={<IntervalsPage />} />
+      <Route path="/workout-config" element={<ConfigPage />} />
       <Route path="/timer" element={<TimerPage />} />
       <Route path="*" element={<Navigate to="/workouts" />} />
     </Routes>

@@ -4,30 +4,22 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
+import { defaultIntervals } from "../constants";
 
 const IntervalsContext = createContext();
-
-const calcTimes = ({ rest, longBreak }) => {
-  rest = +rest;
-  longBreak = +longBreak;
-  return { rest, longBreak };
-};
 
 const intervalsReducer = (state, action) => {
   switch (action.type) {
     case "SET_INTERVALS":
-      return {
-        inputs: action.payload,
-        times: calcTimes(action.payload),
-      };
+      return action.payload;
     default:
       return state;
   }
 };
 
-const initialState = {
-  times: { rest: null, longBreak: null, interval: null },
-  inputs: { longBreak: "", rest: "" },
+const initialState = { 
+  rest: defaultIntervals.rest.toString(), 
+  longBreak: defaultIntervals.longBreak.toString() 
 };
 
 export const IntervalsProvider = ({ children }) => {

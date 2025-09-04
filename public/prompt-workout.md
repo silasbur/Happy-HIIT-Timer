@@ -10,8 +10,10 @@ Every workout you create must follow this exact JSON format:
 {
   "id": "unique-workout-id",
   "title": "Workout Name",
-  "rest": 15,
-  "longbreak": 75,
+  "intervals": {
+    "rest": 15,
+    "longbreak": 75
+  }
   "exercises": [
     {
       "name": "Exercise Name",

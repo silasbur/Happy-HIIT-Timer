@@ -2,15 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const nextPageMap = {
-  workouts: "/exercises",
-  exercises: "/intervals",
-  intervals: "/timer",
+  workouts: "/rest-intervals",
+  intervals: "/exercises",
+  exercises: "/timer",
 };
 
 const prevPageMap = {
-  intervals: "/exercises",
-  timer: "/intervals",
-  exercises: "/workouts",
+  timer: "/exercises",
+  exercises: "/intervals",
+  intervals: "/workouts",
 };
 
 const PageLayout = (props) => {

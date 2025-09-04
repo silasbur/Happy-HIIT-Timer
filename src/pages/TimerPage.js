@@ -5,13 +5,12 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { useExercises } from "../../contexts/ExercisesContext";
-import { useIntervals } from "../../contexts/IntervalsContext";
-import shortBeep from "../../assets/shortAlert.mp3";
-import longBeep from "../../assets/longAlert.mp3";
-import PageLayout from "../../components/PageLayout";
-import "./timerPage.css";
-import truncate from "../../utils/truncate";
+import { useExercises } from "../contexts/ExercisesContext";
+import { useIntervals } from "../contexts/IntervalsContext";
+import shortBeep from "../assets/shortAlert.mp3";
+import longBeep from "../assets/longAlert.mp3";
+import PageLayout from "../components/PageLayout";
+import truncate from "../shared/truncate";
 
 const TimerPage = () => {
   const { exercises, exerciseInterval } = useExercises();
@@ -19,7 +18,7 @@ const TimerPage = () => {
 
   // Get workout from localStorage or default
   const [selectedWorkout, setSelectedWorkout] = useState(null);
-  
+
   useEffect(() => {
     const savedWorkout = localStorage.getItem("selectedWorkout");
     if (savedWorkout) {
@@ -31,7 +30,7 @@ const TimerPage = () => {
       }
     }
   }, []);
-  
+
   const workoutName = selectedWorkout?.title || "Custom Workout";
   const [time, setTime] = useState(null);
   const [icount, setIcount] = useState(0);
@@ -44,7 +43,10 @@ const TimerPage = () => {
   // Calculate the complete sequence of phases
   const phaseSequence = useMemo(() => {
     const exerciseCount = exercises.length || 5;
-    const intervalTimes = intervals.times;
+    const intervalTimes = {
+      rest: Number(intervals.rest) || 0,
+      longBreak: Number(intervals.longBreak) || 0
+    };
 
     const sequence = [];
 
@@ -217,7 +219,7 @@ const TimerPage = () => {
           </div>
           <div className="flex justify-around">
             {exercises.length ? (
-              <div className="w-full h-16 flex items-center set-info">
+              <div className="w-full h-16 flex items-center line-height-64 text-2xl">
                 <div className="w-9/12 h-full text-center bg-gray-100 text-charcoal">
                   {truncate(exercises[icount % exercises.length].name, 20)}
                 </div>

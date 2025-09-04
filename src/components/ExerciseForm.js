@@ -1,10 +1,26 @@
-import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import { useExercises } from "../../contexts/ExercisesContext";
+import { useExercises } from "../contexts/ExercisesContext";
+import { updateWorkout } from "../shared/workouts.local";
+import { useWorkout } from "../contexts/WorkoutContext";
 
 const ExerciseForm = () => {
-  const { addExercise, setExerciseInterval, exerciseInterval } = useExercises();
+  const { exercises, addExercise, setExerciseInterval, exerciseInterval } =
+    useExercises();
+  const { selectedWorkout, setSelectedWorkout } = useWorkout();
   const [name, setName] = useState("");
+
+  // Update workout when exercises change
+  useEffect(() => {
+    if (selectedWorkout && exercises) {
+      try {
+        const updatedWorkout = updateWorkout(selectedWorkout.id, { exercises });
+        setSelectedWorkout(updatedWorkout);
+      } catch (err) {
+        console.error("Failed to update workout exercises:", err);
+      }
+    }
+  }, [exercises]);
 
   const handleAddExercise = (evt) => {
     evt.preventDefault();
@@ -17,15 +33,12 @@ const ExerciseForm = () => {
   const increment = (delta) => {
     const incrementedDelta = +exerciseInterval + delta; // convert to number for addition
     if (incrementedDelta > 0) {
-      setExerciseInterval(incrementedDelta);
+      setExerciseInterval(incrementedDelta + "");
     }
   };
 
   return (
-    <form
-      onSubmit={handleAddExercise}
-      className="form-control gap-2 border border-gray-200 p-4 rounded"
-    >
+    <form onSubmit={handleAddExercise} className="form-control gap-2">
       <div className="form-control">
         <label>
           <span className="label-text">Exercise name:</span>

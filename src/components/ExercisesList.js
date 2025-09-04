@@ -1,8 +1,8 @@
-import { useExercises } from "../../contexts/ExercisesContext";
+import { useExercises } from "../contexts/ExercisesContext";
 import React, { useRef } from "react";
-import truncate from "../../utils/truncate";
+import truncate from "../shared/truncate";
 import { useDrag, useDrop } from "react-dnd";
-import { ReactComponent as GripIcon } from "../../assets/grip.svg";
+import { ReactComponent as GripIcon } from "../assets/grip.svg";
 
 const DRAG_TYPE = "EXERCISE";
 
@@ -64,7 +64,7 @@ export const Exercise = ({ name, id, time, index, moveCardHandler }) => {
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      // Don't replace items with themselves
+      // Don't replace items with themselves../..
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -131,7 +131,12 @@ export const Exercise = ({ name, id, time, index, moveCardHandler }) => {
       </div>
       <div className="justify-right gap-4 flex">
         <span className="text-gray-600 text-sm font-medium">{time}s</span>
-        <button onClick={handleRemove} className="text-red-500 hover:text-red-700 font-bold">×</button>
+        <button
+          onClick={handleRemove}
+          className="text-red-500 hover:text-red-700 font-bold"
+        >
+          ×
+        </button>
       </div>
     </div>
   );
