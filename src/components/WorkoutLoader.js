@@ -12,7 +12,7 @@ function WorkoutLoader({ setSavedWorkouts }) {
   const [copied, setCopied] = useState(false);
   const { setExercises } = useExercises();
   const { setIntervals } = useIntervals();
-  const { setSelectedWorkout, selectedWorkoutId } = useWorkout();
+  const { setSelectedWorkout } = useWorkout();
 
   const handleCustomWorkout = () => {
     try {

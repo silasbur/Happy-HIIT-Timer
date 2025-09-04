@@ -62,7 +62,7 @@ const TimerPage = () => {
     }
 
     return sequence;
-  }, [exercises, intervals]);
+  }, [exercises, intervals, exerciseInterval]);
 
   const toggleRunning = () => {
     setRunning((isRunning) => !isRunning);
@@ -147,6 +147,7 @@ const TimerPage = () => {
     isSoundOn,
     playSounds,
     currPhase,
+    nextPhase,
   ]);
 
   const tick = () => {
@@ -183,7 +184,7 @@ const TimerPage = () => {
       return 0;
     }
     return (time / currPhase.time) * 100;
-  }, [time, currPhase]);
+  }, [time, currPhase, pcount, phaseSequence]);
   return (
     <PageLayout page="timer" title={workoutName}>
       {time === null ? null : (

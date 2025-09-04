@@ -42,7 +42,7 @@ export const ExercisesProvider = ({ children }) => {
 
   const setExerciseInterval = useCallback((time) => {
     intervalDispatch({ type: "SET_INTERVAL", payload: time });
-  });
+  }, []);
 
   const setExercises = useCallback((exercises) => {
     dispatch({ type: "SET_EXERCISES", payload: exercises });

@@ -20,7 +20,7 @@ const ExerciseForm = () => {
         console.error("Failed to update workout exercises:", err);
       }
     }
-  }, [exercises]);
+  }, [exercises, selectedWorkout, setSelectedWorkout]);
 
   const handleAddExercise = (evt) => {
     evt.preventDefault();

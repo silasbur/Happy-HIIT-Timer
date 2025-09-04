@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { defaultIntervals } from "../constants";
 
 const STORAGE_KEY = "savedWorkouts";
 const SELECTED_WORKOUT_KEY = "selectedWorkout";

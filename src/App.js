@@ -24,7 +24,7 @@ const App = () => {
       });
       if (exercises) setExercises(exercises);
     }
-  }, [selectedWorkout]);
+  }, [selectedWorkout, setExercises, setIntervals]);
 
   return (
     <Routes>
