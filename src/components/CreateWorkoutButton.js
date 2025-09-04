@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createWorkout } from "../shared/workouts.local";
 import { useWorkout } from "../contexts/WorkoutContext";
 import { useExercises } from "../contexts/ExercisesContext";
@@ -8,7 +7,6 @@ import { defaultIntervals } from "../constants";
 
 const CreateWorkoutButton = ({ setSavedWorkouts }) => {
   const [isCreating, setIsCreating] = useState(false);
-  const navigate = useNavigate();
   const { setSelectedWorkout } = useWorkout();
   const { setExercises } = useExercises();
   const { setIntervals } = useIntervals();
