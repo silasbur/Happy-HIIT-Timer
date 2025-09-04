@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { defaultIntervals } from "../constants";
 
 const STORAGE_KEY = "savedWorkouts";
-const SELECTED_WORKOUT_KEY = "selectedWorkoutId";
+const SELECTED_WORKOUT_KEY = "selectedWorkout";
 
 // Get all saved workouts from localStorage
 export const getSavedWorkouts = () => {
@@ -97,6 +97,30 @@ export const updateWorkout = (workoutId, updates) => {
   } catch (error) {
     console.error("Failed to update workout:", error);
     throw error;
+  }
+};
+
+// Get selected workout from localStorage
+export const getSelectedWorkout = () => {
+  try {
+    const selectedWorkout = localStorage.getItem(SELECTED_WORKOUT_KEY);
+    return selectedWorkout ? JSON.parse(selectedWorkout) : null;
+  } catch (error) {
+    console.error("Failed to load selected workout:", error);
+    return null;
+  }
+};
+
+// Save selected workout to localStorage
+export const setSelectedWorkout = (workout) => {
+  try {
+    if (workout) {
+      localStorage.setItem(SELECTED_WORKOUT_KEY, JSON.stringify(workout));
+    } else {
+      localStorage.removeItem(SELECTED_WORKOUT_KEY);
+    }
+  } catch (error) {
+    console.error("Failed to save selected workout:", error);
   }
 };
 

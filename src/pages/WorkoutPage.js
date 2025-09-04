@@ -21,6 +21,10 @@ const WorkoutPage = () => {
   }, []);
 
   function handleClick(workout) {
+    if (selectedWorkout?.id === workout.id) {
+      setSelectedWorkout(null);
+      return;
+    }
     setExercises(workout.exercises);
     setIntervals({
       rest: workout.intervals?.rest?.toString() || "",

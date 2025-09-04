@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { useExercises } from "../contexts/ExercisesContext";
 import { useIntervals } from "../contexts/IntervalsContext";
+import { useWorkout } from "../contexts/WorkoutContext";
 import shortBeep from "../assets/shortAlert.mp3";
 import longBeep from "../assets/longAlert.mp3";
 import PageLayout from "../components/PageLayout";
@@ -15,21 +16,7 @@ import truncate from "../shared/truncate";
 const TimerPage = () => {
   const { exercises, exerciseInterval } = useExercises();
   const { intervals } = useIntervals();
-
-  // Get workout from localStorage or default
-  const [selectedWorkout, setSelectedWorkout] = useState(null);
-
-  useEffect(() => {
-    const savedWorkout = localStorage.getItem("selectedWorkout");
-    if (savedWorkout) {
-      try {
-        const workout = JSON.parse(savedWorkout);
-        setSelectedWorkout(workout);
-      } catch (err) {
-        console.error("Failed to parse saved workout:", err);
-      }
-    }
-  }, []);
+  const { selectedWorkout } = useWorkout();
 
   const workoutName = selectedWorkout?.title || "Custom Workout";
   const [time, setTime] = useState(null);
@@ -198,7 +185,7 @@ const TimerPage = () => {
     return (time / currPhase.time) * 100;
   }, [time, currPhase]);
   return (
-    <PageLayout page="timer">
+    <PageLayout page="timer" title={workoutName}>
       {time === null ? null : (
         <div className="content-wrapper">
           <progress
@@ -217,14 +204,27 @@ const TimerPage = () => {
                 : currPhase.key.toUpperCase()}
             </div>
           </div>
-          <div className="flex justify-around">
+          <div className="flex flex-col gap-2 my-4">
             {exercises.length ? (
-              <div className="w-full h-16 flex items-center line-height-64 text-2xl">
-                <div className="w-9/12 h-full text-center bg-gray-100 text-charcoal">
-                  {truncate(exercises[icount % exercises.length].name, 20)}
-                </div>
-                <div className="w-3/12 h-full text-center bg-gray-200 text-charcoal">
-                  {icount + 1 + "/" + exercises.length}
+              <div className="w-full relative">
+                <div className="w-full h-16 flex items-center line-height-64 text-2xl">
+                  <div className="w-9/12 h-full text-center bg-gray-100 text-charcoal flex items-center justify-center">
+                    {(() => {
+                      // During rest phases, show the next exercise
+                      const isRestPhase = currPhase.key === "rest" || currPhase.key === "longBreak";
+                      const displayIndex = isRestPhase ? (icount + 1) % exercises.length : icount % exercises.length;
+                      const exerciseName = exercises[displayIndex]?.name || `Exercise ${displayIndex + 1}`;
+                      return truncate(exerciseName, 20);
+                    })()}
+                  </div>
+                  <div className="w-3/12 h-full text-center bg-gray-200 text-charcoal flex items-center justify-center">
+                    {(() => {
+                      // During rest phases, show the next exercise number
+                      const isRestPhase = currPhase.key === "rest" || currPhase.key === "longBreak";
+                      const displayCount = isRestPhase ? (icount + 1) % exercises.length + 1 : icount % exercises.length + 1;
+                      return displayCount + "/" + exercises.length;
+                    })()}
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -254,35 +254,61 @@ const TimerPage = () => {
             </button>
           </div>
 
-          {/* Exercise Roadmap */}
-          {exercises.length > 0 && (
+          {/* Exercise Roadmap - Only show upcoming phases */}
+          {phaseSequence.length > 0 && (
             <div className="mt-6 w-full">
               <h4 className="text-lg font-semibold mb-3 text-center">
                 {workoutName}
               </h4>
               <div className="flex flex-col gap-2">
-                {exercises.map((exercise, index) => (
-                  <div
-                    key={exercise.id}
-                    className={`w-full p-3 rounded-lg border transition-all duration-200 ${
-                      index === icount % exercises.length
-                        ? "bg-primary text-primary-content border-primary shadow-lg"
-                        : index < icount % exercises.length
-                          ? "bg-success/20 text-success-content border-success/30 opacity-70"
-                          : "bg-base-200 text-base-content border-base-300"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold">{index + 1}</span>
-                        <span className="font-medium">{exercise.name}</span>
-                      </div>
-                      <div className="text-sm font-medium">
-                        {exercise.time}s
+                {phaseSequence.map((phase, index) => {
+                  const isCurrentPhase = index === pcount % phaseSequence.length;
+                  const isCompletedPhase = index < pcount % phaseSequence.length;
+                  const isRestPhase = phase.key === "rest" || phase.key === "longBreak";
+                  
+                  // Don't render completed phases
+                  if (isCompletedPhase) return null;
+                  
+                  // Calculate exercise number for work phases
+                  const exerciseNumber = Math.floor(index / 2) + 1;
+                  
+                  return (
+                    <div
+                      key={`${phase.key}-${index}`}
+                      className={`w-full p-3 rounded-lg border transition-all duration-500 ${
+                        isCurrentPhase
+                          ? isRestPhase 
+                            ? `bg-success text-success-content border-success shadow-lg ${isRunning ? 'animate-pulse scale-105' : ''}`
+                            : `bg-primary text-primary-content border-primary shadow-lg ${isRunning ? 'animate-pulse scale-105' : ''}`
+                          : isRestPhase
+                            ? "bg-success/10 text-success-content border-success/20"
+                            : "bg-base-200 text-base-content border-base-300"
+                      } ${isCurrentPhase && isRunning ? 'transform transition-transform duration-1000' : ''}`}
+                      style={isCurrentPhase && isRunning ? {
+                        animation: 'pulse-scale 2s ease-in-out infinite'
+                      } : {}}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          {!isRestPhase && (
+                            <span className="text-sm font-bold">
+                              {exerciseNumber}
+                            </span>
+                          )}
+                          <span className="font-medium">
+                            {isRestPhase 
+                              ? phase.key === "longBreak" ? "Long Break" : "Rest"
+                              : typeof phase.exercise === 'string' ? phase.exercise : "Work"
+                            }
+                          </span>
+                        </div>
+                        <div className="text-sm font-medium">
+                          {phase.time}s
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                }).filter(Boolean)}
               </div>
             </div>
           )}

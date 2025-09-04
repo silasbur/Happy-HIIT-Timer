@@ -3,7 +3,9 @@ import React, {
   useContext,
   useReducer,
   useCallback,
+  useEffect,
 } from "react";
+import { getSelectedWorkout, setSelectedWorkout as saveSelectedWorkout } from "../shared/workouts.local";
 
 const WorkoutContext = createContext();
 
@@ -19,8 +21,17 @@ const workoutReducer = (state, action) => {
 export const WorkoutProvider = ({ children }) => {
   const [selectedWorkout, dispatch] = useReducer(workoutReducer, null);
 
+  // Load selected workout from localStorage on mount
+  useEffect(() => {
+    const savedWorkout = getSelectedWorkout();
+    if (savedWorkout) {
+      dispatch({ type: "SET_SELECTED", payload: savedWorkout });
+    }
+  }, []);
+
   const setSelectedWorkout = useCallback((workout) => {
     dispatch({ type: "SET_SELECTED", payload: workout });
+    saveSelectedWorkout(workout);
   }, []);
 
   return (
