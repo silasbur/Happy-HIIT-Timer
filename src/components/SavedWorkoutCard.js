@@ -28,8 +28,8 @@ const SavedWorkoutCard = ({ workout, isSelected, onClick, className = "" }) => {
           {workout.title}
         </h3>
         <p className="text-sm text-base-content/70">
-          {workout.exercises.length} exercises • {workout.intervals?.rest || 0}s rest •{" "}
-          {workout.intervals?.longBreak || 0}s break
+          {workout.exercises.length} exercises • {workout.intervals?.rest ?? 0}s rest •{" "}
+          {workout.intervals?.longBreak ?? 0}s break
         </p>
       </div>
     </div>

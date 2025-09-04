@@ -14,6 +14,10 @@ const SelectedWorkoutDisplay = ({ selectedWorkout, showStartButton = true, onCli
 
   if (!selectedWorkout) return null;
 
+  // Debug logging
+  console.log("SelectedWorkout:", selectedWorkout);
+  console.log("Intervals:", selectedWorkout.intervals);
+
   return (
     <div
       className={`mb-4 p-4 bg-primary/10 border border-primary/20 rounded-lg ${
@@ -39,7 +43,7 @@ const SelectedWorkoutDisplay = ({ selectedWorkout, showStartButton = true, onCli
       </div>
       <p className="text-sm text-base-content/70">
         {selectedWorkout.exercises.length} exercises •{" "}
-        {selectedWorkout.intervals?.rest || 0}s rest • {selectedWorkout.intervals?.longBreak || 0}s break
+        {selectedWorkout.intervals?.rest ?? 0}s rest • {selectedWorkout.intervals?.longBreak ?? 0}s break
       </p>
     </div>
   );

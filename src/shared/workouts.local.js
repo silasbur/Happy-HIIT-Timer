@@ -115,7 +115,7 @@ export const importWorkoutFromJSON = (jsonString) => {
       id: workout.id || nanoid(),
       title: workout.title,
       exercises: workout.exercises,
-      rest: workout.rest || 15,
+      intervals: workout.intervals,
       longbreak: workout.longbreak || workout.longBreak || 75,
       createdAt: workout.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),

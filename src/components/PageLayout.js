@@ -9,7 +9,7 @@ const nextPageMap = {
 
 const prevPageMap = {
   timer: "/exercises",
-  exercises: "/intervals",
+  exercises: "/rest-intervals",
   intervals: "/workouts",
 };
 

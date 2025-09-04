@@ -4,7 +4,6 @@ import { useIntervals } from "../contexts/IntervalsContext";
 import { useWorkout } from "../contexts/WorkoutContext";
 import PageLayout from "../components/PageLayout";
 import WorkoutLoader from "../components/WorkoutLoader";
-import SelectedWorkoutDisplay from "../components/SelectedWorkoutDisplay";
 import SavedWorkoutCard from "../components/SavedWorkoutCard";
 import CreateWorkoutButton from "../components/CreateWorkoutButton";
 import { getSavedWorkouts } from "../shared/workouts.local";
@@ -32,7 +31,6 @@ const WorkoutPage = () => {
 
   return (
     <PageLayout title="Workout" page="workouts">
-      <SelectedWorkoutDisplay selectedWorkout={selectedWorkout} />
 
       {/* Saved Workouts */}
       {savedWorkouts.length !== 0 && (

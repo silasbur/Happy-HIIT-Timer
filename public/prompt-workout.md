@@ -12,7 +12,7 @@ Every workout you create must follow this exact JSON format:
   "title": "Workout Name",
   "intervals": {
     "rest": 15,
-    "longbreak": 75
+    "longBreak": 75
   }
   "exercises": [
     {
