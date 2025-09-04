@@ -6,7 +6,7 @@ import { useExercises } from "../contexts/ExercisesContext";
 import { useIntervals } from "../contexts/IntervalsContext";
 import { defaultIntervals } from "../constants";
 
-const CreateWorkoutButton = ({ setSavedWorkouts, to }) => {
+const CreateWorkoutButton = ({ setSavedWorkouts }) => {
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
   const { setSelectedWorkout } = useWorkout();
@@ -39,7 +39,6 @@ const CreateWorkoutButton = ({ setSavedWorkouts, to }) => {
       // Add new workout to the list
       setSavedWorkouts((prev) => [...prev, newWorkout]);
 
-      navigate(to);
     } catch (err) {
       console.error("Failed to create workout:", err);
       alert("Failed to create workout. Please try again.");

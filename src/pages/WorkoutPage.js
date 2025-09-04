@@ -6,7 +6,7 @@ import PageLayout from "../components/PageLayout";
 import WorkoutLoader from "../components/WorkoutLoader";
 import SavedWorkoutCard from "../components/SavedWorkoutCard";
 import CreateWorkoutButton from "../components/CreateWorkoutButton";
-import { getSavedWorkouts } from "../shared/workouts.local";
+import { getSavedWorkouts, deleteWorkout } from "../shared/workouts.local";
 
 const WorkoutPage = () => {
   const [savedWorkouts, setSavedWorkouts] = useState([]);
@@ -33,6 +33,23 @@ const WorkoutPage = () => {
     setSelectedWorkout(workout);
   }
 
+  function handleDelete(workoutId) {
+    try {
+      const success = deleteWorkout(workoutId);
+      if (success) {
+        // Update the local state to remove the deleted workout
+        setSavedWorkouts(prev => prev.filter(w => w.id !== workoutId));
+        
+        // Clear selection if the deleted workout was selected
+        if (selectedWorkout?.id === workoutId) {
+          setSelectedWorkout(null);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to delete workout:", error);
+    }
+  }
+
   return (
     <PageLayout title="Workout" page="workouts">
 
@@ -47,12 +64,13 @@ const WorkoutPage = () => {
           workout={workout}
           isSelected={selectedWorkout?.id === workout.id}
           onClick={handleClick}
+          onDelete={handleDelete}
         />
       ))}
       <CreateWorkoutButton
         setSavedWorkouts={setSavedWorkouts}
-        to="/rest-intervals"
       />
+      
       <WorkoutLoader setSavedWorkouts={setSavedWorkouts} />
     </PageLayout>
   );
