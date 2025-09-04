@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { useExercises } from "../contexts/ExercisesContext";
 import { updateWorkout } from "../shared/workouts.local";
@@ -9,17 +9,33 @@ const ExerciseForm = () => {
     useExercises();
   const { selectedWorkout, setSelectedWorkout } = useWorkout();
   const [name, setName] = useState("");
+  const updateTimeoutRef = useRef(null);
 
-  // Update workout when exercises change
+  // Debounced update workout when exercises change
   useEffect(() => {
     if (selectedWorkout && exercises) {
-      try {
-        const updatedWorkout = updateWorkout(selectedWorkout.id, { exercises });
-        setSelectedWorkout(updatedWorkout);
-      } catch (err) {
-        console.error("Failed to update workout exercises:", err);
+      // Clear any pending updates
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
       }
+      
+      // Debounce updates to prevent excessive re-renders during drag operations
+      updateTimeoutRef.current = setTimeout(() => {
+        try {
+          const updatedWorkout = updateWorkout(selectedWorkout.id, { exercises });
+          setSelectedWorkout(updatedWorkout);
+        } catch (err) {
+          console.error("Failed to update workout exercises:", err);
+        }
+      }, 300); // 300ms debounce
     }
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+    };
   }, [exercises, selectedWorkout, setSelectedWorkout]);
 
   const handleAddExercise = (evt) => {
